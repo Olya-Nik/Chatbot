@@ -38,6 +38,7 @@ class App extends React.Component {
       text: ''
     });
     const send = {cuid: this.state.cuid, text: newItem.text}
+  
     const resp1 = await fetch('http://localhost:3001/request', {
       method: 'POST',
       headers: {
@@ -48,9 +49,10 @@ class App extends React.Component {
     })
     console.log(JSON.stringify(send))
     const ans = await resp1.json();
-    await this.setState({ answer: [...this.state.answer, ans.result.text.value] });
-    newItem.bot = ans.result.text.value;
-    newItem.id = ans.result.id;
+    console.log(ans)
+    await this.setState({ answer: [...this.state.answer, ans.bot] });
+    newItem.bot = ans.bot;
+    newItem.id = ans.id;
     await this.setState({ chat: [...this.state.chat, newItem] });
 
   }

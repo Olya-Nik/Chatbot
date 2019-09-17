@@ -2,6 +2,7 @@ const express = require('express');
 let router = express.Router();
 const path = require('path')
 const fetch = require('node-fetch')
+const bodyParser = require('body-parser');
 
 router.get('/', (req, res)=>{
     res.send("hi")
@@ -33,12 +34,13 @@ router.post('/request', async (req, res) => {
           "Accept": "application/json",
           "Content-Type": "application/json"
       },
-      body: JSON.stringify({"cuid": req.body.cuid, "text": req.body.text})     
+      body: JSON.stringify({cuid: req.body.cuid, text: req.body.text})     
     });
     const json = await resp2.json()
-    // const bot = json.result.cuid
-    console.log(json)
-    res.json()
+    const bot = json.result.text.value
+    const id = json.result.id
+    
+    res.json({bot: bot, id: id})
 })
 
 module.exports = router;

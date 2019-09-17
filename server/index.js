@@ -1,6 +1,7 @@
 let express = require('express')
 let morgan = require('morgan')
 let fetch = require('node-fetch')
+const bodyParser = require('body-parser');
 let app = express()
 const path = require('path');
 const port = 3001;
@@ -21,8 +22,12 @@ const corsMiddleware = (req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
     next();
   };
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
 app.use(corsMiddleware);
 app.use('/', indexRouter);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.listen(port, function () {
     console.log(`Example app listening on port ${port}!`)
 });
