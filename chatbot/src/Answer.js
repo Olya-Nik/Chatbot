@@ -1,28 +1,20 @@
 import React from 'react';
 
 class Answer extends React.Component {
-    // constructor(props){
-    //     super(props);
-    //     this.state = {
-    //         cuid: "",
-    //   text: null,
-    //   clientMessage: null,
-    //   answer: null
-    //     }
-    // }
-  
-      render() {
 
-          return (
-              <div>
-              {this.props.answer}
-              <span>{this.props.clientMessage.map(mes => (
-                  <div>{mes.text}</div>
-          ))}</span>
-              
-              </div>    
-          )
-      }
+    render() {
+        return (
+            <div>
+
+                {this.props.chat.map(chat => (
+                    <div key={chat.id}>
+                        <p>{chat.text}</p>
+                        <p>{chat.bot}</p>
+                    </div>
+                ))}
+            </div>
+        );
+    }
 }
 
-export default Answer
+export default Answer;
