@@ -42,5 +42,20 @@ router.post('/request', async (req, res) => {
     
     res.json({bot: bot, id: id})
 })
+router.post('/greeting', async (req, res) => {
+    console.log(req.body)
+    const resp3 = await fetch('https://biz.nanosemantics.ru/api/bat/nkd/json/Chat.event', {
+        method: 'POST',
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({cuid: req.body.cuid, euid: req.body.euid})     
+    });
+    const greeting = await resp3.json()
+    console.log(greeting.result.text.value)
+    
+    res.json({greeting: greeting.result.text.value})
+})
 
 module.exports = router;

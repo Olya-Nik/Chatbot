@@ -9,6 +9,7 @@ class App extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.state = {
       cuid: '',
+      greeting: '',
       text: '',
       clientMessage: [],
       answer: [],
@@ -20,8 +21,20 @@ class App extends React.Component {
     const resp = await fetch('http://localhost:3001/chatbot')
     const cuid = await resp.json()
     // console.log(cuid)
-    this.setState({ cuid: cuid.cuid })
-
+    this.setState({ cuid: cuid.cuid },async ()=>{
+      const respEuid = await fetch('http://localhost:3001/greeting',{
+        method: 'POST',
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({"cuid": this.state.cuid, "euid": "00b2fcbe-f27f-437b-a0d5-91072d840ed3"})
+      })
+      const greeting = await respEuid.json()
+      console.log(greeting.greeting)
+      this.setState({greeting: greeting.greeting})
+    })
+    
   }
   onChange(e) {
     this.setState({ text: e.target.value })
@@ -62,7 +75,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <Answer chat={this.state.chat} answer={this.state.answer} clientMessage={this.state.clientMessage} />
+          <Answer greeting={this.state.greeting} chat={this.state.chat} answer={this.state.answer} clientMessage={this.state.clientMessage} />
           <input placeholder="text" onChange={this.onChange}></input>
           <button type="submit" onClick={this.onClick}>Send</button>
         </header>
